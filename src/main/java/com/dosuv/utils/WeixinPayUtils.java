@@ -29,11 +29,7 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
 import com.wechat.pay.contrib.apache.httpclient.auth.AutoUpdateCertificatesVerifier;
 import com.wechat.pay.contrib.apache.httpclient.auth.PrivateKeySigner;
@@ -53,7 +49,7 @@ public class WeixinPayUtils {
 	 * @param apiKey apiV3Key
 	 * @param merchantId 商户id
 	 * @param merchantSerialNumber 商户编号
-	 * <li>微信证书文件</li>
+	 * 
 	 * @param merchantPrivateKey 给微信发送请求签名使用   --微信下载的三个文件中的 apiclient_key.pem
 	 * @param pubicKey 用来对微信返回的数据进行校验签名使用   --配置好其它参数后手动调用getCer方法获得
 	 * @param keyStore 给用户付款等接口用到   --微信下载三个文件中的p12文件
@@ -81,7 +77,7 @@ public class WeixinPayUtils {
 	 *            商户号
 	 * @param merchantSerialNumber
 	 *            商户证书序列号
-	 * @return
+	 * @return httpclient 
 	 */
 	public static HttpClient createHttpClient(String apiKey, PrivateKey merchantPrivateKey, String merchantId,
 			String merchantSerialNumber) {
@@ -165,8 +161,8 @@ public class WeixinPayUtils {
 	}
 	/**
 	 * 获取证书接口 暂时不被调用 
-	 * @throws ClientProtocolException
-	 * @throws IOException
+	 * @throws ClientProtocolException Note: This element neither has attached source nor attached Javadoc and hence no Javadoc could be found.
+	 * @throws IOException 链接异常
 	 * 对于返回的数据请调用decryptToString进行解密证书
 	 */
 	public String getCer() throws ClientProtocolException, IOException {
