@@ -43,7 +43,6 @@ import com.wechat.pay.contrib.apache.httpclient.util.AesUtil;
 import com.wechat.pay.contrib.apache.httpclient.util.PemUtil;
 
 public class WeixinPayUtils {
-	private static final Logger logger = LoggerFactory.getLogger(WeixinPayUtils.class);
 	public String defaultApiKey;//apiV3key 
 	public String defaultMerchantId;//商户id
 	private String defaultMerchantSerialNumber;//商户编号
@@ -97,7 +96,6 @@ public class WeixinPayUtils {
 							apiKey.getBytes("utf-8"))))
 					.build();
 		} catch (Exception e) {
-			logger.error(e.toString());
 			return null;
 		}
 	}
@@ -166,9 +164,10 @@ public class WeixinPayUtils {
 		return new AesUtil(apiKey.getBytes()).decryptToString(associatedData.getBytes(), nonce.getBytes(), ciphertext);
 	}
 	/**
-	 * 获取证书接口 暂时不被调用
+	 * 获取证书接口 暂时不被调用 
 	 * @throws ClientProtocolException
 	 * @throws IOException
+	 * 对于返回的数据请调用decryptToString进行解密证书
 	 */
 	public String getCer() throws ClientProtocolException, IOException {
 		HttpClient httpClient = createDefaultHttpClient();
@@ -177,11 +176,6 @@ public class WeixinPayUtils {
 		httpGet.addHeader("Content-type","application/json; charset=utf-8");
 		CloseableHttpResponse response = (CloseableHttpResponse) httpClient.execute(httpGet);
 		String bodyAsString = EntityUtils.toString(response.getEntity());
-		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode json = objectMapper.reader().readTree(bodyAsString).get("data").get(0).get("encrypt_certificate");
-		try {
-			return decryptToString(json.get("associated_data").textValue(), json.get("nonce").textValue(), json.get("ciphertext").textValue());
-		}catch (Exception e) {}
 		return bodyAsString;
 	}
 }
